@@ -18,6 +18,7 @@ use App\Http\Controllers\EcaController;
 
 Route::post('/tarificateur', [EcaController::class,"tarificateur"]);
 Route::post('/save', [EcaController::class,"saveContrat"]);
+Route::post('/not-eligible', [EcaController::class,"notEligible"]);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

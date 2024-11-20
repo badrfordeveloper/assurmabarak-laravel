@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Repositories\EcaSaveRepository;
-use App\Http\Repositories\EcaTarificateurRepository;
 use Illuminate\Http\Request;
+use App\Http\Repositories\EcaSaveRepository;
+use App\Http\Repositories\EcaNotEligibleRepository;
+use App\Http\Repositories\EcaTarificateurRepository;
 
 class EcaController extends Controller
 {
-    public function __construct( protected EcaTarificateurRepository $ecaTarificateurRepo, protected EcaSaveRepository $ecaSaveRepo) {
+    public function __construct(
+        protected EcaTarificateurRepository $ecaTarificateurRepo,
+         protected EcaSaveRepository $ecaSaveRepo,
+         protected EcaNotEligibleRepository $ecaNotEligibleRepo,
+         ) {
     }
     /**
      * Handle the incoming request.
@@ -21,5 +26,10 @@ class EcaController extends Controller
     public function saveContrat(Request $request)
     {
       return  $this->ecaSaveRepo->sendSouscription($request->all());
+    }
+
+    public function notEligible(Request $request)
+    {
+      return  $this->ecaNotEligibleRepo->notEligible($request->all());
     }
 }
