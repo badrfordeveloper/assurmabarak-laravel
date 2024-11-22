@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use App\Http\Repositories\EcaAuthRepository;
@@ -8,14 +9,16 @@ use App\Http\Repositories\EcaAuthRepository;
 class EcaTarificateurRepository extends EcaAuthRepository {
 
     public function collectDataForTarif($data){
+
         $result =  [
-            "produitChoisi" => $data["produitChoisi"],
-            "produitType" => $data["produitType"],
+            "produitChoisi" => "MRH",
+            "produitType" => "MRH",
             "courtier" => "CO0075901991",
             "identifiantWs" => "lassurances",
+            "tcv" => 20,
             "codePostal" => $data["codePostal"],
             "ville" => $data["ville"],
-            "dateEffet" => $data["dateEffet"],
+            "dateEffet" => Carbon::parse($data['dateEffet'])->format("d/m/Y"),
             "typeResidence" => $data["typeResidence"],
             "typeHabitation" => $data["typeHabitation"],
             "qualiteAssure" => $data["qualiteAssure"],
@@ -27,10 +30,9 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             "sinistres2ansDerniers" => $data["sinistres2ansDerniers"],
             "insertOuCheminee" => $data["insertOuCheminee"],
             "nbEnfantMineur" => $data["nbEnfantMineur"],
-            "tcv" => $data["tcv"],
             "nbrEtageImmb" => $data["nbrEtageImmb"],
             "etageBien" => $data["etageBien"],
-            "nbPiecesPrincipalesSup50" => $data["nbPiecesPrincipalesSup50"],
+            //"nbPiecesPrincipalesSup50" => $data["nbPiecesPrincipalesSup50"],
             "presenceVeranda" => $data["presenceVeranda"],
             "presencePicineOuTennis" => $data["presencePicineOuTennis"],
             "capitalMobilier" => $data["capitalMobilier"],
@@ -42,7 +44,9 @@ class EcaTarificateurRepository extends EcaAuthRepository {
     }
 
     public function getTarif($data,$firstTry = true){
-    try {
+    /* try { */
+
+
         $token = $this->getAccessToken();
         if (!empty($token)) {
         $result = $this->collectDataForTarif($data);
@@ -85,9 +89,9 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             }
         }
         }
-    } catch (\Exception $e) {
+   /*  } catch (\Exception $e) {
         \Log::info('ECA Tarif ERROR Exception :: '.$e->getMessage());
         return response()->json([ 'message' => 'Failed to send JSON.', 'error' => $e->getMessage() ],500);
-    }
+    } */
     }
 }
