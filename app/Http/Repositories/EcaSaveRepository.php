@@ -10,7 +10,7 @@ class EcaSaveRepository extends EcaAuthRepository {
     public function collectDataForSaveContrat($data){
         $result =  [
             "flag" => "DEVIS_COMPLET",
-            "flagType" => "DOCUMENT", // Obtenir le PDF avant signature en format base64 et refaire un appel d'api pour la signature et paiement par contre cela crée 2 fois le contrat dans l'espace courtage
+            "flagType" =>  $data['flagType'],
             "courtier" => "CO0075901991",
             "identifiantWs" => "lassurances",
             "produits" => [
