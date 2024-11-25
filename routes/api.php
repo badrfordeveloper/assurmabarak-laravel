@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EcaController;
-
+use App\Http\Controllers\ContactController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +19,7 @@ use App\Http\Controllers\EcaController;
 Route::post('/tarificateur', [EcaController::class,"tarificateur"]);
 Route::post('/save', [EcaController::class,"saveContrat"]);
 Route::post('/not-eligible', [EcaController::class,"notEligible"]);
-
+Route::post('/send-email', [ContactController::class, 'sendEmail']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
