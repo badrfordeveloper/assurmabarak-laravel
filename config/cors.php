@@ -2,19 +2,33 @@
 
 return [
 
-    'paths' => ['api/*'], // Apply CORS to API routes only
+    /*
+    |--------------------------------------------------------------------------
+    | Cross-Origin Resource Sharing (CORS) Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure your settings for cross-origin resource sharing
+    | or "CORS". This determines what cross-origin operations may execute
+    | in web browsers. You are free to adjust these settings as needed.
+    |
+    | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+    |
+    */
 
-    'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, etc.)
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_origins' => ['https://assurmabarak.com'], // Your frontend domain
+    'allowed_methods' => ['*'],
+
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'], // Allow all headers
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => true, // Allow cookies/auth headers
+    'supports_credentials' => false,
+
 ];
