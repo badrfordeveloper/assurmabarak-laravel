@@ -29,11 +29,11 @@ class EcaNotEligibleRepository extends EcaAuthRepository {
             $emails = array("b.jeddab@eca-assurances.com");
             \Log::info('ECA not Eligible ERROR Exception :: ');
 
-        /*     \Mail::send('mails.notEligible', compact('data'), function ($message) use ($emails) {
-                $message->from('notEligible@assurmabarak.fr')
+            \Mail::send('mails.notEligible', compact('data'), function ($message) use ($emails) {
+                $message->from('notEligible@assurmabarak.com')
                         ->to($emails)
                         ->subject('AssureMaBarak - Assuré non éligible ECA');
-            }); */
+            });
             return response()->json([
                 'message' => 'Mail sent successfully!',
             ], 200);
