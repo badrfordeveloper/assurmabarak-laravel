@@ -15,6 +15,7 @@ class ContactController extends Controller
             'telephone' => 'nullable',
             'email' => 'nullable',
             'lien' => 'nullable',
+            'reference' => 'nullable',
         ]);
 
         $details = [
@@ -22,9 +23,11 @@ class ContactController extends Controller
             'telephone' => $validated['telephone'] ?? '',
             'email' => $validated['email'] ?? '',
             'lien' => $validated['lien'] ?? '',
+            'reference' => $validated['reference'] ?? '',
         ];
 
-        Mail::to('mohamed.tajmout@gmail.com')->send(new ContactMail($details));
+        $fromAddress = 'signature@assurmabarak.com';
+        Mail::to('mohamed.tajmout@gmail.com')->send(new ContactMail($details, $fromAddress));
 
         return response()->json(['message' => 'Email sent successfully!']);
     }
