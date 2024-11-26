@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use App\Http\Repositories\EcaAuthRepository;
@@ -8,7 +9,8 @@ use App\Http\Repositories\EcaAuthRepository;
 class EcaSaveRepository extends EcaAuthRepository {
 
     public function collectDataForSaveContrat($data){
-        $result =  [
+      \Log::info('ECA SAVE DATA ccc : '. json_encode($data));
+      $result =  [
             "flag" => "DEVIS_COMPLET",
             "flagType" =>  $data['flagType'],
             "courtier" => "CO0075901991",
@@ -21,11 +23,11 @@ class EcaSaveRepository extends EcaAuthRepository {
                     "possedePiscines" => $data['piscine'],
                      "habitationUsageProfessionel" => $data['habitationUsageProfessionel'] ? $data['habitationUsageProfessionel'] : "NON",
                      "habitationAvecAccessoire" => "NON",
-                     "jardinBiensExterieur" => "NON",
+                     "jardinBiensExterieur" => $data['piscine'],
                      "piscine" => $data['piscine'] ? $data['piscine'] : "NON",
                      "rcPiscineTennis" => $data['piscine'] ? $data['piscine'] : "NON",
                      "surfaceDepSuperieur100" => "NON",
-                     "dateEffet" => $data['dateEffet'],
+                     "dateEffet" => Carbon::parse($data['dateEffet'])->format("d/m/Y"),
                      "typeHabitation" => $data['typeHabitation'],
                      "typeResidence" => $data['typeResidence'],
                      "qualiteAssure" => $data['qualiteAssure'],
@@ -39,7 +41,6 @@ class EcaSaveRepository extends EcaAuthRepository {
                      "sinistres2ansDerniers" => $data['sinistres2ansDerniers'],
                      "habitationDejaAssure" => $data['habitationDejaAssure'],
                      "bienComporteViranda" => $data['presenceVeranda'],
-                     "bienComportePiscineTennis" => "NON",
                      "batimentCouvertMatDurs" => "OUI",
                      "moyenProtectionVols" => $data['moyenProtectionVols'],
                      "capitalMobilier" => $data['capitalMobilier'],
@@ -48,14 +49,14 @@ class EcaSaveRepository extends EcaAuthRepository {
                      "complementAdresse" => $data['souscripteurAdressePostale'],
                      "periodicite" => "MENSUELLE",
                      "assureObjetValeur" => "OUI",
-                     "niveauGarantieObjVal" => "10",
-                     "valeurEstime" => "5000",
-                     "declarAssistantMatern" => "OUI",
-                     "panneauPhotoVolt" => "OUI",
-                     "bienElectrMoin5ans" => "OUI",
-                     "possedeJardins" => "NON",
+                     "niveauGarantieObjVal" => "10",//$data['niveauGarantieObjVal'],
+                     "valeurEstime" => $data['capitalMobilier'],
+                     "declarAssistantMatern" => $data['declarAssistantMatern'] ?? 'NON',
+                     "panneauPhotoVolt" => $data['panneauPhotoVolt'] ?? 'NON',
+                     "bienElectrMoin5ans" => $data['bienElectrMoin5ans'] ?? 'NON',
+                     "possedeJardins" => $data['piscine'] ? $data['piscine'] : "NON",
                      "repriseHamon" => "NON",
-                     "modePaiement" => "CHEQUE",
+                     "modePaiement" => $data['modePaiement'],
                      "modePaiementCotisationSuivante" => "PRELEVEMENT",
                      "formuleRecommandee" => $data['formuleChoisi'],
                      "formuleChoisi" => $data['formuleChoisi'],
@@ -90,7 +91,7 @@ class EcaSaveRepository extends EcaAuthRepository {
                "situationFam" => $data['souscripteursituationFam'],
                "profession" => "AUTRE",
                "assurerConjoint" => "OUI",
-               "dateNaissance" => $data['dateNaissance']
+               "dateNaissance" => Carbon::parse($data['dateNaissance'])->format("d/m/Y")
             ],
            //  "payeur" => [
            //     "ibanPrelevemnt" => str_replace(' ','', $data['souscripteuribanPrelevemnt']),
