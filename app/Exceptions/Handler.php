@@ -18,6 +18,30 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+
+
+    public function report(Throwable $exception)
+    {
+        if ( env('APP_ENV') == "local" && $this->shouldReport($exception)) {
+            $error = $exception->getMessage().' on line '.$exception->getLine();
+            $url = url()->full();
+            $file = $exception->getTrace()[0]["file"]??"";
+            $myRequest = request()->all();
+            $requestMethod = request()->method();
+           //$browserName = Browser::browserFamily().' - '.Browser::deviceType().' - '.Browser::platformFamily() ;
+
+            \Log::error('HANDLER_EXCEPTIONS : '.json_encode(["error" =>$error,"url" =>$url,"file" =>$file,"myRequest" =>$myRequest,"requestMethod" =>$requestMethod]));
+
+            $emails = array("mrbadrjeddab@gmail.com");
+
+            \Mail::send('mails.error_mail', compact('error','url','file','myRequest','requestMethod'), function ($message) use ($emails) {
+                $message->from('exception@assurmabarak.com')->to($emails)->subject('Exception détecté : ASSURMABARAK');
+            });
+        }
+        parent::report($exception);
+    }
+
+
     /**
      * Register the exception handling callbacks for the application.
      */

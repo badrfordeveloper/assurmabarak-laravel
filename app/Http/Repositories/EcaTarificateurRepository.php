@@ -45,7 +45,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
 
     public function getTarif($data,$firstTry = true){
     /* try { */
-
+       
 
         $token = $this->getAccessToken();
         if (!empty($token)) {

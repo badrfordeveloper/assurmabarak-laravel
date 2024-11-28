@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EcaController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TestController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,7 +17,7 @@ use App\Http\Controllers\ContactController;
 |
 */
 
-
+//Route::post('/tarificateur', [TestController::class,"test"]);
 Route::post('/tarificateur', [EcaController::class,"tarificateur"]);
 Route::post('/save', [EcaController::class,"saveContrat"]);
 Route::post('/not-eligible', [EcaController::class,"notEligible"]);
