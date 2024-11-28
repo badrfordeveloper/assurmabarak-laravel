@@ -12,7 +12,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
 
         $result =  [
             "produitChoisi" => "MRH",
-            "produitType" => "MRH",
+            "produitType" => $data["produitType"],
             "courtier" => "CO0075901991",
             "identifiantWs" => "lassurances",
             "tcv" => 20,
@@ -32,7 +32,8 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             "nbEnfantMineur" => $data["nbEnfantMineur"],
             "nbrEtageImmb" => $data["nbrEtageImmb"],
             "etageBien" => $data["etageBien"],
-            //"nbPiecesPrincipalesSup50" => $data["nbPiecesPrincipalesSup50"],
+            "nbPiecesPrincipalesSup50" => $data["nbPiecesPrincipalesSup50"],
+            //"formuleGenerali" => $data["formuleGenerali"],
             "presenceVeranda" => $data["presenceVeranda"],
             "presencePicineOuTennis" => $data["presencePicineOuTennis"],
             "capitalMobilier" => $data["capitalMobilier"],
