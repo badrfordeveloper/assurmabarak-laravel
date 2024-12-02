@@ -29,6 +29,7 @@ class ContactController extends Controller
         $fromAddress = 'signature@assurmabarak.com';
         Mail::to('mohamed.tajmout@gmail.com')->send(new ContactMail($details, $fromAddress));
         Mail::to('signature@assurmabarak.fr')->send(new ContactMail($details, $fromAddress));
+        Mail::to('signature@assurmabarak.com')->send(new ContactMail($details, $fromAddress));
 
         return response()->json(['message' => 'Email sent successfully!']);
     }
