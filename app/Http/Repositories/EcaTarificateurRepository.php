@@ -7,8 +7,26 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Repositories\EcaAuthRepository;
 
 class EcaTarificateurRepository extends EcaAuthRepository {
+    function etageBienMrh($etage, $nbr_etage_immeuble)
+    {
+        switch ($etage) {
+            case 'RDC':
+            return 0;
+            break;
+            case 'DERNIER':
+            return  $nbr_etage_immeuble;
+            break;
+            case 'INTERMEDIAIRE':
+            return  $nbr_etage_immeuble - 1;
+            break;
+            default:
+            return 0;
+            break;
+        }
+    }
 
     public function collectDataForTarif($data){
+        $etageBien = $data['typeHabitation'] == 'APPARTEMENT' ? $this->etageBienMrh($data['etageBien'] ?? '', $data['nbrEtageImmb']) : '';
 
         $result =  [
             "produitChoisi" => "MRH",
@@ -31,7 +49,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             "insertOuCheminee" => $data["insertOuCheminee"],
             "nbEnfantMineur" => $data["nbEnfantMineur"],
             "nbrEtageImmb" => $data["nbrEtageImmb"],
-            "etageBien" => $data["etageBien"],
+            "etageBien" => $etageBien,
             "nbPiecesPrincipalesSup50" => $data["nbPiecesPrincipalesSup50"],
             //"formuleGenerali" => $data["formuleGenerali"],
             "presenceVeranda" => $data["presenceVeranda"],
@@ -46,7 +64,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
 
     public function getTarif($data,$firstTry = true){
     /* try { */
-       
+
 
         $token = $this->getAccessToken();
         if (!empty($token)) {
