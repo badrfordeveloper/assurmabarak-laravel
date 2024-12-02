@@ -24,6 +24,8 @@ class EcaSaveRepository extends EcaAuthRepository {
          $data["indemnisationMobilier"] = $formules[$data['formuleChoisi']]['indemnisationMobilier'];
          $data["dontObjetsValeur"] = $formules[$data['formuleChoisi']]['niveauOJ'];
       }else{
+         $data["dontObjetsValeur"] = "";
+         $data["indemnisationMobilier"] = "";
          $data["franchise"] = "";
          $data["capitalMobilier"] = $data['capitalMobilier'];         
       }
