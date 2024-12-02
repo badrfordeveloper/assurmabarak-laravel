@@ -15,9 +15,12 @@ class EcaController extends Controller
          protected EcaNotEligibleRepository $ecaNotEligibleRepo,
          ) {
     }
-    /**
-     * Handle the incoming request.
-     */
+
+    public function getDependecies(Request $request,$nbrPiece)
+    {
+      return  $this->ecaTarificateurRepo->getDependecies($nbrPiece);
+    }
+
     public function tarificateur(Request $request)
     {
       return  $this->ecaTarificateurRepo->getTarif($request->all());

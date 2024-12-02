@@ -17,8 +17,9 @@ use App\Http\Controllers\TestController;
 |
 */
 
-//Route::post('/tarificateur', [TestController::class,"test"]);
+Route::get('/test', [TestController::class,"test"]);
 Route::post('/tarificateur', [EcaController::class,"tarificateur"]);
+Route::get('/getDependecies/{nbrPiece}', [EcaController::class,"getDependecies"]);
 Route::post('/save', [EcaController::class,"saveContrat"]);
 Route::post('/not-eligible', [EcaController::class,"notEligible"]);
 Route::post('/send-email', [ContactController::class, 'sendEmail']);

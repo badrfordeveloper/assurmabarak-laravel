@@ -68,17 +68,7 @@ class EcaSaveRepository extends EcaAuthRepository {
                      "formuleRecommandee" => $data['formuleChoisi'],
                      "formuleChoisi" => $data['formuleChoisi'],
                      "fraisDossier" => 0,
-                     "assureur" => [
-                        "identifiantAssureur" =>  "",
-                        "nomAssureur" => "test test",
-                        "referenceContrat" => "aaaaaaa",
-                        "dateEcheanceContrat" => "12/12/2018",
-                        "typeVoie" => "QUAI",
-                        "libelle" => "aaaa",
-                        "complement" => "Complément",
-                        "codePostal" => "09100",
-                        "ville" => "St-Michel"
-                     ]
+                     "assureur" => []
                   ]
                ]
             ],
@@ -100,21 +90,13 @@ class EcaSaveRepository extends EcaAuthRepository {
                "assurerConjoint" => "OUI",
                "dateNaissance" => Carbon::parse($data['dateNaissance'])->format("d/m/Y")
             ],
-           //  "payeur" => [
-           //     "ibanPrelevemnt" => str_replace(' ','', $data['souscripteuribanPrelevemnt']),
-           //     "ibanRembDifferent" => "NON",
-           //     "ibanRemboursement" => str_replace(' ','', $data['souscripteuribanPrelevemnt']),
-           //     "mandatSepa" => "GENERER_MANDAT",
-           //     "payeurDifferent" => "NON",
-           //     "nomPayeur" => $data['souscripteurNom'],
-           //     "prenomPayeur" => $data['souscripteurPrenom'],
-           //     "numeroPayeur" => str_replace(' ','', $data['souscripteurTel']),
-           //     "voiePayeur" => $data['souscripteurAdressePostale'],
-           //     "batimentPayeur" => null,
-           //     "libellePayeur" => "Complément",
-           //     "codePostalPayeur" => $data['souscripteurCodePostal'],
-           //     "villePayeur" => $data['souscripteurVille'],
-           //  ],
+            "payeur" => [
+               "ibanPrelevemnt" => $data['souscripteuribanPrelevemnt'],
+               "ibanRemboursement" => $data['souscripteuribanPrelevemnt'],
+               "ibanRembDifferent" => "NON",
+               "mandatSepa" => "GENERER_MANDAT",
+               "payeurDifferent" => "NON"
+            ],
         ];
 
         // if(isset($data['nbrPiecePrincipale']) && $data['nbrPiecePrincipale'] === 1) {
