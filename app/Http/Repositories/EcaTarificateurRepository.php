@@ -33,69 +33,97 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             "nbrEtageImmb" => $data["nbrEtageImmb"],
             "etageBien" => $data["etageBien"],
             "nbPiecesPrincipalesSup50" => $data["nbPiecesPrincipalesSup50"],
-            "formuleGenerali" => $data["formuleGenerali"],
+            // "formuleGenerali" => $data["formuleGenerali"],
             "presenceVeranda" => $data["presenceVeranda"],
             "presencePicineOuTennis" => $data["presencePicineOuTennis"],
             "capitalMobilier" => $data["capitalMobilier"],
-            "niveauFranchise" => $data["niveauFranchise"],
-            "indemnMobilier" => $data["indemnMobilier"],
-            "niveauOJ" => $data["niveauOJ"]
+            // "niveauFranchise" => $data["niveauFranchise"],
+            // "indemnMobilier" => $data["indemnMobilier"],
+            // "niveauOJ" => $data["niveauOJ"]
         ];
         return $result;
     }
 
-    public function getTarif($data,$firstTry = true){
-    /* try { */
-       
-
+    public function getTarif($data, $firstTry = true){
         $token = $this->getAccessToken();
-        if (!empty($token)) {
-        $result = $this->collectDataForTarif($data);
-        $url = $this->baseUrl . '/api/tarificateur';
-        
-        \Log::info('ECA Tarif DATA :: '.$url.' data :: '. json_encode($result));
 
-        $response = Http::withToken($token)->post($url ,$result );
-        if($response->successful()){
+        if (!empty($token)) {
+            $result = $this->collectDataForTarif($data);
+            $url = $this->baseUrl . '/api/tarificateur';
+            $responses = [];
+
+            if ($result['produitType'] === "MRH_GENERALI") {
+                $nbrPiece = $result['nbrPiecePrincipale'];
+                $formules = [
+                    'ESSENTIELLE' => ['capitalMobilier' => 2000, 'niveauOJ' => 'ZERO',   'indemnisationMobilier' => 'VALEUR_USAGE'],
+                    'CONFORT'     => ['capitalMobilier' => 4000, 'niveauOJ' => 'ZERO',   'indemnisationMobilier' => 'VALEUR_NEUF_25_POURCENT'],
+                    'COMPLETE'    => ['capitalMobilier' => 8000, 'niveauOJ' => 'QUINZE', 'indemnisationMobilier' => 'VALEUR_NEUF_25_POURCENT'],
+                    'OPTIMUM'     => ['capitalMobilier' => 8000, 'niveauOJ' => 'VINGT',  'indemnisationMobilier' => 'VALEUR_NEUF_25_POURCENT'],
+                ];
+
+                foreach ($formules as $formule => $settings) {
+                    $result['capitalMobilier'] = $settings['capitalMobilier'] * $nbrPiece;
+                    $result['formuleGenerali'] = $formule;
+                    $result['niveauFranchise'] = 'TROISCENTS';
+                    $result['indemnMobilier'] = $formules[$formule]['indemnisationMobilier'];
+                    $result['niveauOJ'] = $settings['niveauOJ'];
+
+                    \Log::info("ECA Tarif DATA :: $url data :: " . json_encode($result));
+                    $response = Http::withToken($token)->post($url, $result);
+
+                    if (!$response->successful()) {
+                        return $this->handleErrorResponse($response, $data, $firstTry);
+                    }
+
+                    $responses = array_merge($responses,$response->json());
+                }
+            } else {
+                \Log::info("ECA Tarif DATA :: $url data :: " . json_encode($result));
+                $response = Http::withToken($token)->post($url, $result);
+
+                if (!$response->successful()) {
+                    return $this->handleErrorResponse($response, $data, $firstTry);
+                }
+
+                $responses = $response->json();
+            }
+
             return response()->json([
                 'message' => 'JSON sent successfully!',
-                'response' => $response->json()
+                'response' => $responses,
             ], 200);
-        }else{
-            if($response->status() == 422 || $response->status() == 400 ){
-
-            \Log::info('ECA Tarif ERROR VALIDATION :: '.json_encode($response->object()));
-
-
-            return response()->json([
-                'message' => 'Failed to send JSON.',
-                'error' => $response->body()
-            ], $response->status());
-
-            }else if($response->status() == 401){
-
-            if($firstTry){
-                // retry with different token
-                Session::forget("eca_api_token");
-                \Log::info('ECA Tarif retry auth ');
-                return $this->getTarif($data,false);
-            }
-
-            \Log::info('ECA Tarif ERROR erreur d\'authentification  :: status: '.$response->status().' body : '.json_encode($response->body()));
-            return ["erreur" => "erreur d'authentification "];
-            }else{
-            \Log::info('ECA Tarif ERROR :: status: '.$response->status().' body : '.json_encode($response->body()));
-            return response()->json([
-                'message' => 'Failed to send JSON.',
-                'error' => $response->body()
-            ],500);
-            }
         }
-        }
-   /*  } catch (\Exception $e) {
-        \Log::info('ECA Tarif ERROR Exception :: '.$e->getMessage());
-        return response()->json([ 'message' => 'Failed to send JSON.', 'error' => $e->getMessage() ],500);
-    } */
+
+        return response()->json(['message' => 'Token not found.'], 401);
+    }
+
+
+    private function handleErrorResponse($response, $data, $firstTry){
+      if (in_array($response->status(), [422, 400])) {
+          \Log::info('ECA Tarif ERROR VALIDATION :: ' . json_encode($response->object()));
+
+          return response()->json([
+              'message' => 'Failed to send JSON.',
+              'error' => $response->body(),
+          ], $response->status());
+      }
+
+      if ($response->status() === 401) {
+          if ($firstTry) {
+              Session::forget("eca_api_token");
+              \Log::info('ECA Tarif retry auth');
+              return $this->getTarif($data, false);
+          }
+
+          \Log::info('ECA Tarif ERROR Authentication :: status: ' . $response->status() . ' body: ' . json_encode($response->body()));
+          return ["erreur" => "Erreur d'authentification"];
+      }
+
+      \Log::info('ECA Tarif ERROR :: status: ' . $response->status() . ' body: ' . json_encode($response->body()));
+      return response()->json([
+          'message' => 'Failed to send JSON.',
+          'error' => $response->body(),
+      ], 500);
     }
 
     public function getDependecies($nbrPiece){

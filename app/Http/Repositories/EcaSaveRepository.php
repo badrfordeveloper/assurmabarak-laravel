@@ -10,6 +10,23 @@ class EcaSaveRepository extends EcaAuthRepository {
 
     public function collectDataForSaveContrat($data){
       \Log::info('ECA SAVE DATA ccc : '. json_encode($data));
+
+      if ($data['produitType'] === "MRH_GENERALI") {
+         $nbrPiece = $data['nbrPiecePrincipale'];
+         $formules = [
+            'ESSENTIELLE' => ['capitalMobilier' => 2000, 'niveauOJ' => 'ZERO',   'indemnisationMobilier' => 'VALEUR_USAGE'],
+            'CONFORT'     => ['capitalMobilier' => 4000, 'niveauOJ' => 'ZERO',   'indemnisationMobilier' => 'VALEUR_NEUF_25_POURCENT'],
+            'COMPLETE'    => ['capitalMobilier' => 8000, 'niveauOJ' => 'QUINZE', 'indemnisationMobilier' => 'VALEUR_NEUF_25_POURCENT'],
+            'OPTIMUM'     => ['capitalMobilier' => 8000, 'niveauOJ' => 'VINGT',  'indemnisationMobilier' => 'VALEUR_NEUF_25_POURCENT'],
+         ];
+         $data["capitalMobilier"] = $formules[$data['formuleChoisi']]['capitalMobilier'] * $nbrPiece;
+         $data["franchise"] = "TROISCENTS";
+         $data["indemnisationMobilier"] = $formules[$data['formuleChoisi']]['indemnisationMobilier'];
+         $data["dontObjetsValeur"] = $formules[$data['formuleChoisi']]['niveauOJ'];
+      }else{
+         $data["capitalMobilier"] = $data['capitalMobilier'];         
+      }
+
       $result =  [
             "flag" => "DEVIS_COMPLET",
             "flagType" =>  $data['flagType'],
@@ -43,13 +60,14 @@ class EcaSaveRepository extends EcaAuthRepository {
                      "bienComporteViranda" => $data['presenceVeranda'],
                      "batimentCouvertMatDurs" => "OUI",
                      "moyenProtectionVols" => $data['moyenProtectionVols'],
-                     "capitalMobilier" => $data['capitalMobilier'],
-                     "franchise" => "TROISCENTS",
-                     "indemnisationMobilier" => "VALEUR_NEUF_5_ANS",
+                     "capitalMobilier" => $data["capitalMobilier"],
+                     "franchise" => $data["franchise"],
+                     "indemnisationMobilier" => $data["indemnisationMobilier"],
+                     "niveauGarantieObjVal" => "10",
+                     "dontObjetsValeur" => $data["dontObjetsValeur"],
                      "complementAdresse" => $data['souscripteurAdressePostale'],
                      "periodicite" => "MENSUELLE",
                      "assureObjetValeur" => "OUI",
-                     "niveauGarantieObjVal" => "10",//$data['niveauGarantieObjVal'],
                      "valeurEstime" => "5000",//$data['capitalMobilier'],
                      "declarAssistantMatern" => $data['declarAssistantMatern'] ?? 'NON',
                      "panneauPhotoVolt" => $data['panneauPhotoVolt'] ?? 'NON',
@@ -125,19 +143,6 @@ class EcaSaveRepository extends EcaAuthRepository {
         //    $data['formuleChoisi'] = 'ESSENTIELLE';
         // }
 
-        if($data['formuleChoisi'] == 'ESSENTIELLE'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'ZERO';
-           $result['produits']['MRH'][0]['indemnisationMobilier'] = 'VALEUR_USAGE';
-        }
-        if($data['formuleChoisi'] == 'CONFORT'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'DIX';
-        }
-        if($data['formuleChoisi'] == 'COMPLETE'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'QUINZE';
-        }
-        if($data['formuleChoisi'] == 'OPTIMUM'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'TRENTE';
-        }
         return $result;
       }
 
