@@ -70,7 +70,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
         if (!empty($token)) {
         $result = $this->collectDataForTarif($data);
         $url = $this->baseUrl . '/api/tarificateur';
-        
+
         \Log::info('ECA Tarif DATA :: '.$url.' data :: '. json_encode($result));
 
         $response = Http::withToken($token)->post($url ,$result );
@@ -128,7 +128,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             ];
         }
         return $result;
-       
+
     }
 
 
@@ -139,7 +139,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             'ESSENTIELLE' ,
             'CONFORT',
             'COMPLETE',
-            'OPTIMUM' 
+            'OPTIMUM'
           ];
     } else {
         return ["ECO", "CONFORT", "OPTIMALE", "PREMIUM"];
@@ -158,16 +158,16 @@ class EcaTarificateurRepository extends EcaAuthRepository {
   public function getObjetValeur($formule)
   {
     if ($formule == 'ESSENTIELLE') {
-      return ["ZERO" => "0%"];
+      return ["0" => "0%"];
     }
     if ($formule == 'CONFORT') {
-      return [ "ZERO" => "0%", "DIX" => "10%"];
+      return [ "0" => "0%", "10" => "10%"];
     } elseif ($formule == 'COMPLETE') {
-      return ["QUINZE" => "15%"];
+      return ["15" => "15%"];
     } elseif ($formule == 'OPTIMUM') {
-      return [ "VINGT" => "20%", "TRENTE" => "30%"];
+      return [ "20" => "20%", "30" => "30%"];
     }
-    return ["ZERO" => "0%"];
+    return ["0" => "0%"];
   }
 
   public function getIndemnisationMobilier($formule)
@@ -191,7 +191,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
         } elseif ($formule == 'COMPLETE' || $formule == 'OPTIMUM') {
         $max = ($nbrPiece == 4)  ? 60000 : (in_array($nbrPiece,[5,6]) ? 100000 : 16000 * $nbrPiece);
             return [8000 * $nbrPiece => $this->numberFormatWithEuro(8000 * $nbrPiece), 12000 * $nbrPiece => $this->numberFormatWithEuro(12000 * $nbrPiece),    $max => $this->numberFormatWithEuro($max)];
-        }      
+        }
     }
     return [];
 

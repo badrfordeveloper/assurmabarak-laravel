@@ -44,13 +44,18 @@ class EcaSaveRepository extends EcaAuthRepository {
                      "batimentCouvertMatDurs" => "OUI",
                      "moyenProtectionVols" => $data['moyenProtectionVols'],
                      "capitalMobilier" => $data['capitalMobilier'],
-                     "franchise" => "TROISCENTS",
-                     "indemnisationMobilier" => "VALEUR_NEUF_5_ANS",
+                     "valeurEstime" => $data['capitalMobilier'],
+                     "franchise" => $data['franchise'],
+                     "indemnisationMobilier" =>  $data['indemnisationMobilier'],
+                     "dontObjetsValeur" =>  $data['dontObjetsValeur'],
+                     "nbrEtage" =>  $data['nbrEtage'],
                      "complementAdresse" => $data['souscripteurAdressePostale'],
                      "periodicite" => "MENSUELLE",
-                     "assureObjetValeur" => "OUI",
-                     "niveauGarantieObjVal" => "10",//$data['niveauGarantieObjVal'],
-                     "valeurEstime" => "5000",//$data['capitalMobilier'],
+
+                     "assureObjetValeur" => "NON",
+                     "niveauGarantieObjVal" => "15",
+
+
                      "declarAssistantMatern" => $data['declarAssistantMatern'] ?? 'NON',
                      "panneauPhotoVolt" => $data['panneauPhotoVolt'] ?? 'NON',
                      "bienElectrMoin5ans" => $data['bienElectrMoin5ans'] ?? 'NON',
@@ -98,46 +103,10 @@ class EcaSaveRepository extends EcaAuthRepository {
                "payeurDifferent" => "NON"
             ],
         ];
-
-        // if(isset($data['nbrPiecePrincipale']) && $data['nbrPiecePrincipale'] === 1) {
-        //    $data['produits']['produit']['type'] = 'MRH';
-
-        // } else {
-        //    $data['produits']['produit']['type'] = 'MRH_GENERALI';
-        // }
-
-        if(isset($data['flagType']) && $data['flagType'] == 'subscription') {
-           unset($result['flagType']);
-        }
-
         if(isset($data['etageAppart'])) {
            $result['produits']['MRH'][0]['etageAppart'] = $data['etageAppart'];
         }
 
-        if($data['typeHabitation'] == 'APPARTEMENT') {
-           $result['produits']['MRH'][0]['nbrEtage'] = 5;
-        }
-
-        // if($data['formuleChoisi'] == 'ECO'){
-        //    $data['formuleChoisi'] = 'ESSENTIELLE';
-        // }
-        // if($data['formuleChoisi'] == 'ECO'){
-        //    $data['formuleChoisi'] = 'ESSENTIELLE';
-        // }
-
-        if($data['formuleChoisi'] == 'ESSENTIELLE'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'ZERO';
-           $result['produits']['MRH'][0]['indemnisationMobilier'] = 'VALEUR_USAGE';
-        }
-        if($data['formuleChoisi'] == 'CONFORT'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'DIX';
-        }
-        if($data['formuleChoisi'] == 'COMPLETE'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'QUINZE';
-        }
-        if($data['formuleChoisi'] == 'OPTIMUM'){
-           $result['produits']['MRH'][0]['dontObjetsValeur'] = 'TRENTE';
-        }
         return $result;
       }
 
