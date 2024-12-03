@@ -158,16 +158,16 @@ class EcaTarificateurRepository extends EcaAuthRepository {
   public function getObjetValeur($formule)
   {
     if ($formule == 'ESSENTIELLE') {
-      return ["0" => "0%"];
+      return ["ZERO" => "0%"];
     }
     if ($formule == 'CONFORT') {
-      return [ "0" => "0%", "10" => "10%"];
+      return [ "ZERO" => "0%", "DIX" => "10%"];
     } elseif ($formule == 'COMPLETE') {
-      return ["15" => "15%"];
+      return ["QUINZE" => "15%"];
     } elseif ($formule == 'OPTIMUM') {
-      return [ "20" => "20%", "30" => "30%"];
+      return [ "VINGT" => "20%", "TRENTE" => "30%"];
     }
-    return ["0" => "0%"];
+    return ["ZERO" => "0%"];
   }
 
   public function getIndemnisationMobilier($formule)
