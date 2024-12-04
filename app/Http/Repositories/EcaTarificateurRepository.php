@@ -51,7 +51,6 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             "nbrEtageImmb" => $data["nbrEtageImmb"],
             "etageBien" => $etageBien,
             "nbPiecesPrincipalesSup50" => $data["nbPiecesPrincipalesSup50"],
-            "formuleGenerali" => $data["formuleGenerali"],
             "presenceVeranda" => $data["presenceVeranda"],
             "presencePicineOuTennis" => $data["presencePicineOuTennis"],
             "capitalMobilier" => $data["capitalMobilier"],
@@ -59,6 +58,10 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             "indemnMobilier" => $data["indemnMobilier"],
             "niveauOJ" => $data["niveauOJ"]
         ];
+
+        if(isset($data["formuleGenerali"])){
+            $result["formuleGenerali"] = $data["formuleGenerali"];
+        }
         return $result;
     }
 
