@@ -11,7 +11,7 @@
     }
 
     </style>
-<h1> Informations de souscripteur</h1>
+<h1>{{ $data['resilieAutreAssureur'] == "OUI"  ? "Assuré non éligible"  : "Informations de souscripteur" ; }}  </h1>
 <table>
     <tr>
         <td> Nom : </td>
@@ -42,7 +42,7 @@
         <td>{{ $data["ville"] }} </td>
     </tr>
     <tr>
-        <td> adresse postale : </td>
-        <td>{{ $data["adressePostale"] }} </td>
+        <td> Date effet : </td>
+        <td>{{ $data["dateEffet"] }} </td>
     </tr>
 </table>

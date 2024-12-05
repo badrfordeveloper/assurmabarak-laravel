@@ -21,7 +21,7 @@ Route::get('/test', [TestController::class,"test"]);
 Route::post('/tarificateur', [EcaController::class,"tarificateur"]);
 Route::get('/getDependecies/{nbrPiece}', [EcaController::class,"getDependecies"]);
 Route::post('/save', [EcaController::class,"saveContrat"]);
-Route::post('/not-eligible', [EcaController::class,"notEligible"]);
+Route::post('/sendNotificationSubscription', [EcaController::class,"sendNotificationSubscription"]);
 Route::post('/send-email', [ContactController::class, 'sendEmail']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

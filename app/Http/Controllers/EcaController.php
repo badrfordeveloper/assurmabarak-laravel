@@ -31,8 +31,8 @@ class EcaController extends Controller
       return  $this->ecaSaveRepo->sendSouscription($request->all());
     }
 
-    public function notEligible(Request $request)
+    public function sendNotificationSubscription(Request $request)
     {
-      return  $this->ecaNotEligibleRepo->notEligible($request->all());
+      return  $this->ecaNotEligibleRepo->sendNotificationSubscription($request->all());
     }
 }
