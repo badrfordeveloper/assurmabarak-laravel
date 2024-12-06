@@ -11,7 +11,7 @@
     }
 
     </style>
-<h1>{{ $data['resilieAutreAssureur'] == "OUI"  ? "Assuré non éligible"  : "Informations de souscripteur" ; }}  </h1>
+<h1>{{ $data['resilieAutreAssureur'] == "OUI"  ? "Assuré non éligible"  : "Informations du souscripteur" }}  </h1>
 <table>
     <tr>
         <td> Nom : </td>

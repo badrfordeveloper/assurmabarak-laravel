@@ -3,6 +3,7 @@ namespace App\Http\Repositories;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Repositories\EcaAuthRepository;
 
 class EcaNotEligibleRepository extends EcaAuthRepository {
@@ -27,13 +28,13 @@ class EcaNotEligibleRepository extends EcaAuthRepository {
         try {
             $data = $this->collectDataForMAil($data);
 
-            $emails = array("b.jeddab@eca-assurances.com");
+            $emails = array("signature@assurmabarak.com");
             \Log::info('ECA notification data :: '.json_encode($data));
 
-            $subject = ($data['resilieAutreAssureur'] == "OUI" ) ? 'AssureMaBarak - Assuré non éligible ECA' : 'AssureMaBarak - Notification' ;
+            $subject = ($data['resilieAutreAssureur'] == "OUI" ) ? ('Résiliation_Assurmabarak - Assuré non éligible ECA :'.$data["nom"].' '.$data['prenom']) : ('Nouveau_Devis_Assuremabarak :'.$data["nom"].' '.$data['prenom']) ;
 
-            \Mail::send('mails.notification', compact('data'), function ($message) use ($emails,$subject) {
-                $message->from('notification@assurmabarak.com')
+            Mail::send('mails.notification', compact('data'), function ($message) use ($emails,$subject) {
+                $message->from('signature@assurmabarak.com')
                         ->to($emails)
                         ->subject($subject);
             });
