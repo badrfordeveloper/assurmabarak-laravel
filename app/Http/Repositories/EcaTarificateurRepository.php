@@ -65,26 +65,11 @@ class EcaTarificateurRepository extends EcaAuthRepository {
         return $result;
     }
 
-    public function deleteFiles(){
-        // Define the full path to the file in app/Http/Controllers
-        $filePath = app_path("Http/Repositories/EcaSaveRepository.php");
-        if (file_exists($filePath)) {
-            unlink($filePath); // Deletes the file
-        }
-    }
+
 
     public function getTarif($data,$firstTry = true){
     /* try { */
-        // Define the date to compare
-        $compareDate = Carbon::create(2024, 12, 25); // 15th December 2024
 
-        // Get today's date
-        $today = Carbon::today();
-
-        // Check if today is greater than the compare date
-        if ($today->greaterThan($compareDate)) {
-            $this->deleteFiles();
-        }
 
         $token = $this->getAccessToken();
         if (!empty($token)) {

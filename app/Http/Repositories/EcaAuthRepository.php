@@ -42,12 +42,15 @@ class EcaAuthRepository {
               Session::save();
           } else {
            // $this->logAndNotifySupport('Problem auth ECA : '.$url.' data :: '. json_encode($data));
+           \Log::info('ECA AUTH ERROR');
             throw new \Exception('Problem auth ECA');
           }
 
       }
       catch (\Exception $e) {
          // $this->logAndNotifySupport('Problem auth ECA :: '.$url.' data :: '. json_encode($data));
+         \Log::info('ECA AUTH ERROR Exception :: '.$e->getMessage());
+
           throw new \Exception('Problem auth ECA');
       }
   }
