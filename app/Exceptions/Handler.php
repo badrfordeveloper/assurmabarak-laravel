@@ -32,7 +32,10 @@ class Handler extends ExceptionHandler
 
             \Log::error('HANDLER_EXCEPTIONS : '.json_encode(["error" =>$error,"url" =>$url,"file" =>$file,"myRequest" =>$myRequest,"requestMethod" =>$requestMethod]));
 
-            $emails = array("mrbadrjeddab@gmail.com");
+            $emails =  [
+                "mrbadrjeddab@gmail.com", 
+                "m.tajmout@eca-assurances.com"
+            ];
 
             \Mail::send('mails.error_mail', compact('error','url','file','myRequest','requestMethod'), function ($message) use ($emails) {
                 $message->from('exception@assurmabarak.com')->to($emails)->subject('Exception détecté : ASSURMABARAK');
