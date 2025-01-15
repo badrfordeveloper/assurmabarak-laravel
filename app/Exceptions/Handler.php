@@ -33,8 +33,7 @@ class Handler extends ExceptionHandler
             \Log::error('HANDLER_EXCEPTIONS : '.json_encode(["error" =>$error,"url" =>$url,"file" =>$file,"myRequest" =>$myRequest,"requestMethod" =>$requestMethod]));
 
             $emails =  [
-                "mrbadrjeddab@gmail.com", 
-                "m.tajmout@eca-assurances.com"
+                "mohamed.tajmout@gmail.com"
             ];
 
             \Mail::send('mails.error_mail', compact('error','url','file','myRequest','requestMethod'), function ($message) use ($emails) {
