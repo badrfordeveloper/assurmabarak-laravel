@@ -13,40 +13,16 @@
     </style>
 <h1>{{ $data['resilieAutreAssureur'] == "OUI"  ? "Assuré non éligible"  : "Informations du souscripteur" }}  </h1>
 <table>
+    @foreach ($data as $key => $value)
     <tr>
-        <td> Nom : </td>
-        <td>{{ $data["nom"] }} </td>
+        <td>{{ ucfirst(str_replace('_', ' ', $key)) }}:</td>
+        <td>
+            @if (is_array($value))
+                {{ implode(', ', $value) }} <!-- Handle array values (e.g., selectedOptions) -->
+            @else
+                {{ $value }} <!-- Handle non-array values -->
+            @endif
+        </td>
     </tr>
-    <tr>
-        <td> Prenom: </td>
-        <td>{{ $data["prenom"] }} </td>
-    </tr>
-    <tr>
-        <td> Email : </td>
-        <td>{{ $data["email"] }} </td>
-    </tr>
-    <tr>
-        <td> tel : </td>
-        <td>{{ $data["tel"] }} </td>
-    </tr>
-    <tr>
-        <td> date de naissance : </td>
-        <td>{{ $data["dateNaissance"] }} </td>
-    </tr>
-    <tr>
-        <td> Adresse : </td>
-        <td>{{ $data["adresseComplete"] }} </td>
-    </tr>
-    <tr>
-        <td> code postal : </td>
-        <td>{{ $data["codePostal"] }} </td>
-    </tr>
-    <tr>
-        <td> ville : </td>
-        <td>{{ $data["ville"] }} </td>
-    </tr>
-    <tr>
-        <td> Date effet : </td>
-        <td>{{ $data["dateEffet"] }} </td>
-    </tr>
+@endforeach
 </table>

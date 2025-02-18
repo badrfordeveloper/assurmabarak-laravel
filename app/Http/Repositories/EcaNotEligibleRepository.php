@@ -15,12 +15,25 @@ class EcaNotEligibleRepository extends EcaAuthRepository {
             "prenom" => $data["prenom"],
             "email" => $data["email"],
             "tel" => $data["telephone"],
-            "dateNaissance" => $data["dateNaissance"],
-            "codePostal" => $data["codePostal"],
+            "date Naissance" => $data["dateNaissance"],
+            "adresse Complete" => $data["adresseComplete"],
+            "code Postal" => $data["codePostal"],
             "ville" => $data["ville"],
-            "dateEffet" => $data["dateEffet"],
-            "resilieAutreAssureur" => $data["resilieAutreAssureur"],
-            "adresseComplete" => $data["adresseComplete"],
+            "date Effet" => $data["dateEffet"],
+            "resilieAutreAssureur" => $data["resilieAutreAssureur"]??'',
+            
+            "qualite Assure" => $data["qualiteAssure"] ?? '',
+            "type residence" => $data["type_residence"] ?? '',
+            "appartement situe" => $data["appartement_situe"] ?? '',
+            "surface habitable" => $data["surface_habitable"] ?? '',
+            "nombre dependence" => $data["dependenceCount"] ?? '',
+            "surface Dependance" => $data["surfaceDependance"] ?? '',
+            "nombre Etage Immeuble" => $data["nbrEtageImmb"] ?? '',
+            "nombre Piece Principale Plus 30m" => $data["nbrPiecePrincipalePlus30m"] ?? '',
+            "nombre pieces principales" => $data["nbr_pieces_principales"] ?? '',
+            "chemine pro" => $data["cheminepro"] ?? '',
+            "Options" => $data["selectedOptions"] ?? '',
+            
         ];
         return $result;
     }
