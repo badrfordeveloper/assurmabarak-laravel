@@ -20,6 +20,7 @@ class EcaNotEligibleRepository extends EcaAuthRepository {
             "ville" => $data["ville"],
             "dateEffet" => $data["dateEffet"],
             "resilieAutreAssureur" => $data["resilieAutreAssureur"],
+            "adresseComplete" => $data["adresseComplete"],
         ];
         return $result;
     }

@@ -34,6 +34,10 @@
         <td>{{ $data["dateNaissance"] }} </td>
     </tr>
     <tr>
+        <td> Adresse : </td>
+        <td>{{ $data["adresseComplete"] }} </td>
+    </tr>
+    <tr>
         <td> code postal : </td>
         <td>{{ $data["codePostal"] }} </td>
     </tr>
